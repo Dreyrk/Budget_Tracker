@@ -1,5 +1,5 @@
 import { db } from "@/lib/supabase";
-import { getData } from "@/services/asyncstorage";
+import { getObjectData } from "@/services/asyncstorage";
 import { AppState } from "react-native";
 
 const checkUserAuth = async (): Promise<boolean> => {
@@ -10,8 +10,8 @@ const checkUserAuth = async (): Promise<boolean> => {
       db.auth.stopAutoRefresh();
     }
   });
-  const result = getData("login");
-  return false;
+  const isAuth = getObjectData("user") !== null;
+  return isAuth;
 };
 
 export default checkUserAuth;

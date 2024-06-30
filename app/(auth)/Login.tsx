@@ -21,10 +21,10 @@ const formFields: InputControlValue[] = [
   },
 ];
 
-GoogleSignin.configure({
-  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
-  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
-});
+// GoogleSignin.configure({
+//   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+//   iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+// });
 
 export default function Login() {
   const [user, setUser] = useState<InputControlValue>({ email: "", password: "" });
@@ -70,14 +70,14 @@ export default function Login() {
         <Text style={styles.dividerText}>OR</Text>
         <View style={styles.divider}></View>
       </View>
-      <GoogleSigninButton
+      {/* <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Light}
         onPress={() => {
           // initiate sign in
         }}
         disabled={false}
-      />
+      /> */}
       <TouchableOpacity onPress={() => {}}>
         <Text>Continue with Google</Text>
       </TouchableOpacity>
