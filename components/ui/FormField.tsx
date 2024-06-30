@@ -7,8 +7,9 @@ export default function FormField({ label, id, value, setValue, placeholder }: F
   };
   return (
     <View style={styles.container}>
-      <Text>{label}</Text>
+      <Text style={styles.label}>{label}</Text>
       <TextInput
+        secureTextEntry={id.includes("password")}
         style={styles.input}
         id={id}
         value={value[id]}
@@ -23,7 +24,7 @@ export default function FormField({ label, id, value, setValue, placeholder }: F
 const styles = StyleSheet.create({
   container: {},
   label: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
   },
   input: {

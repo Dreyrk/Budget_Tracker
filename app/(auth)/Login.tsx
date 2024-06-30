@@ -1,8 +1,12 @@
 import FormField from "@/components/ui/FormField";
 import { Colors } from "@/constants/Colors";
 import { InputControlValue } from "@/constants/types/props";
-import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Pressable, Alert } from "react-native";
+import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin";
+import { router } from "expo-router";
+import { db } from "@/lib/supabase";
+import { storeObjectData } from "@/services/asyncstorage";
 
 const formFields: InputControlValue[] = [
   {
@@ -17,9 +21,34 @@ const formFields: InputControlValue[] = [
   },
 ];
 
+GoogleSignin.configure({
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+});
+
 export default function Login() {
   const [user, setUser] = useState<InputControlValue>({ email: "", password: "" });
-  const login = () => {};
+  const [loading, setLoading] = useState<boolean>(false);
+  const login = async () => {
+    setLoading(true);
+    const {
+      error,
+      data: { session },
+    } = await db.auth.signInWithPassword({
+      email: user.email,
+      password: user.password,
+    });
+    if (session) {
+      storeObjectData("user", session);
+    }
+    if (error) {
+      Alert.alert(error.message);
+    } else {
+      router.push("/(tabs)/Home");
+    }
+    setLoading(false);
+  };
+
   return (
     <View style={styles.page}>
       <View style={styles.titleContainer}>
@@ -29,10 +58,29 @@ export default function Login() {
         {formFields.map(({ id, label, placeholder }) => (
           <FormField key={id} id={id} label={label} placeholder={placeholder} value={user} setValue={setUser} />
         ))}
-        <TouchableOpacity style={styles.submitBtn} onPress={login}>
+        <TouchableOpacity disabled={loading} style={styles.submitBtn} onPress={login}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
+      <Pressable onPress={() => router.push("/Register")} style={styles.linkContainer}>
+        <Text style={styles.link}>No account yet ? Register now.</Text>
+      </Pressable>
+      <View style={styles.dividerContainer}>
+        <View style={styles.divider}></View>
+        <Text style={styles.dividerText}>OR</Text>
+        <View style={styles.divider}></View>
+      </View>
+      <GoogleSigninButton
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Light}
+        onPress={() => {
+          // initiate sign in
+        }}
+        disabled={false}
+      />
+      <TouchableOpacity onPress={() => {}}>
+        <Text>Continue with Google</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -65,5 +113,33 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     fontSize: 15,
+  },
+  linkContainer: {
+    marginHorizontal: "auto",
+    paddingHorizontal: 5,
+    paddingVertical: 10,
+  },
+  link: {
+    color: Colors.global.button,
+    textDecorationLine: "underline",
+  },
+  dividerContainer: {
+    marginTop: 6,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  divider: {
+    height: 1,
+    flexBasis: 140,
+    borderBottomWidth: 1,
+    borderBottomColor: "#202020",
+  },
+  dividerText: {
+    flexBasis: 40,
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#202020",
+    textAlign: "center",
   },
 });

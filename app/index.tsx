@@ -7,8 +7,6 @@ export default function InitalRouting() {
 
   if (!rootNavigationState?.key) return null;
 
-  console.log(isLogged);
-
   if (isLogged) {
     return <Redirect href={"/(tabs)/Home"} />;
   } else {
