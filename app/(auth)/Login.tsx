@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Pressable, Alert } from "react-native";
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
-import { db } from "@/lib/supabase";
+import { db } from "@/lib/db";
 import { storeObjectData } from "@/services/asyncstorage";
 
 const formFields: InputControlValue[] = [

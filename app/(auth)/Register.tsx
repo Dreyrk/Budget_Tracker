@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Pressable, StyleSheet, Alert } from "reac
 import FormField from "@/components/ui/FormField";
 import { Colors } from "@/constants/Colors";
 import { InputControlValue } from "@/constants/types/props";
-import { db } from "@/lib/supabase";
+import { db } from "@/lib/db";
 
 const formFields: InputControlValue[] = [
   {
@@ -29,16 +29,20 @@ export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
   const register = async () => {
     setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await db.auth.signUp({
-      email: user.email,
-      password: user.password,
-    });
+    if (user.password === user.confirm_password) {
+      const {
+        data: { session },
+        error,
+      } = await db.auth.signUp({
+        email: user.email,
+        password: user.password,
+      });
 
-    if (error) Alert.alert(error.message);
-    if (!session) Alert.alert("Please check your inbox for email verification!");
+      if (error) Alert.alert(error.message);
+      if (session) router.push("/Login");
+    } else {
+      Alert.alert("Wrong password", "Please confirm your password");
+    }
     setLoading(false);
   };
   return (
