@@ -6,7 +6,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Pressable, Alert } from "reac
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import { db } from "@/lib/db";
-import { storeObjectData } from "@/services/asyncstorage";
+import { getObjectData, storeObjectData } from "@/services/asyncstorage";
+import GoogleLogin from "@/components/ui/GoogleLogin";
 
 const formFields: InputControlValue[] = [
   {
@@ -39,7 +40,7 @@ export default function Login() {
       password: user.password,
     });
     if (session) {
-      storeObjectData("user", session);
+      await storeObjectData("session", session);
     }
     if (error) {
       Alert.alert(error.message);
@@ -78,9 +79,6 @@ export default function Login() {
         }}
         disabled={false}
       /> */}
-      <TouchableOpacity onPress={() => {}}>
-        <Text>Continue with Google</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -103,7 +101,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   submitBtn: {
-    backgroundColor: Colors.global.button,
+    backgroundColor: Colors.global.button.primary,
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   link: {
-    color: Colors.global.button,
+    color: Colors.global.button.primary,
     textDecorationLine: "underline",
   },
   dividerContainer: {
@@ -141,5 +139,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#202020",
     textAlign: "center",
+  },
+  loginBtnContainer: {
+    marginVertical: 20,
+    flexDirection: "column",
+    gap: 16,
   },
 });

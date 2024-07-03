@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   submitBtn: {
-    backgroundColor: Colors.global.button,
+    backgroundColor: Colors.global.button.primary,
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   link: {
-    color: Colors.global.button,
+    color: Colors.global.button.primary,
     textDecorationLine: "underline",
   },
   dividerContainer: {

@@ -7,11 +7,12 @@ export default function ExpenseItem({ expense }: ExpenseItemProps) {
     <View style={styles.container}>
       <Text style={styles.title}>{expense.title}</Text>
       <Text ellipsizeMode="tail" numberOfLines={1} style={styles.categoriesContainer}>
-        {expense.categories.map((category) => (
-          <Pressable onPress={() => console.log("pressed ", category)} key={category}>
-            <Text style={styles.text}>{category}, </Text>
-          </Pressable>
-        ))}
+        {expense.categories &&
+          expense.categories.map((category) => (
+            <Pressable onPress={() => console.log("pressed ", category)} key={category}>
+              <Text style={styles.text}>{category}, </Text>
+            </Pressable>
+          ))}
       </Text>
       <Amount amount={expense.amount} />
     </View>

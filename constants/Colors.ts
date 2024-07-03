@@ -24,7 +24,13 @@ export const Colors = {
     tabIconSelected: tintColorDark,
   },
   global: {
-    button: "#2196f3",
+    button: {
+      primary: "#2196f3",
+      destructive: "#d00000",
+      success: "#29bf12",
+      warning: "#fb8500",
+      ghost: "transparent",
+    },
     ghostText: "#adb5bd",
   },
 };

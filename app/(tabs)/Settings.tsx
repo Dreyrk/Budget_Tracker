@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { router } from "expo-router";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 export default function SettingsScreen() {
@@ -9,6 +10,7 @@ export default function SettingsScreen() {
         title="Logout"
         onPress={() => {
           db.auth.signOut();
+          router.push("/(auth)/Login");
         }}
       />
     </View>
