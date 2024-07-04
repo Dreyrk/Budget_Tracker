@@ -1,12 +1,18 @@
 import { Option } from "@/constants/types/items";
 import { DropdownComponentProps } from "@/constants/types/props";
-import { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-const DropdownComponent = ({ data, search, placeholder, searchPlaceholder, onChange }: DropdownComponentProps) => {
-  const [value, setValue] = useState<any>(null);
-
+const DropdownComponent = ({
+  data,
+  search,
+  placeholder,
+  searchPlaceholder,
+  onChange,
+  value,
+  setValue,
+  id,
+}: DropdownComponentProps) => {
   const renderItem = (item: Option) => {
     return (
       <View style={styles.item}>
@@ -29,12 +35,12 @@ const DropdownComponent = ({ data, search, placeholder, searchPlaceholder, onCha
       valueField="value"
       placeholder={placeholder || "Select Item"}
       searchPlaceholder={searchPlaceholder || "Search..."}
-      value={value}
+      value={value ? value[id] : ""}
       onChange={
         onChange
           ? onChange
           : (item: Option) => {
-              setValue(item.value);
+              setValue({ ...value, [id]: item.value });
             }
       }
       renderItem={renderItem}

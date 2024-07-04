@@ -31,6 +31,7 @@ export default function HomeScreen() {
     try {
       setLoading(true);
       setExpenses(await getAllExpenses());
+      setLoading(false);
     } catch (e) {
       console.error(`failed to fetch data: ${(e as Error).message}`);
     }

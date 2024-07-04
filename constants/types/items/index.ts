@@ -11,6 +11,7 @@ export type Expense = {
   categories?: string[];
   user_id: string;
   date: string;
+  period?: number;
 };
 
 export type NewExpense = {
@@ -19,6 +20,7 @@ export type NewExpense = {
   description?: string;
   categories?: string[];
   date?: string;
+  period?: number;
 };
 
 export type Option = { label: string; value: any };

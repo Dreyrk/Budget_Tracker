@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import { TabsHeaderProps } from "@/constants/types/props";
 import Tab from "./Tab";
 import CustomButton from "../ui/CustomButton";
-import { useState } from "react";
+import CreateModal from "../expenses/CreateModal";
 
 export default function TabsHeader({ tabs }: TabsHeaderProps) {
   const [open, setOpen] = useState<boolean>(false);
@@ -20,8 +22,11 @@ export default function TabsHeader({ tabs }: TabsHeaderProps) {
         </ScrollView>
       </View>
       <View style={{ flexGrow: 1, flexDirection: "row", justifyContent: "center" }}>
-        <CustomButton onPress={handleOpen} text="New +" variant="primary" />
+        <CustomButton onPress={handleOpen} text="New" variant="primary">
+          <AntDesign name="plus" size={20} color="#fff" />
+        </CustomButton>
       </View>
+      <CreateModal open={open} setOpen={setOpen} />
     </View>
   );
 }

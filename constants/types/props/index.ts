@@ -31,6 +31,9 @@ export type DropdownComponentProps = {
   searchPlaceholder?: string;
   placeholder?: string;
   onChange?: () => void;
+  id: string;
+  value: InputControlValue;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type SectionHeaderProps = {
@@ -51,9 +54,14 @@ export type FormFieldProps = {
 };
 
 export type CustomButtonProps = {
-  text: string;
+  text?: string;
   variant?: "primary" | "destructive" | "success" | "warning";
   classes?: { [key: string]: string };
   children?: ReactNode;
   onPress: () => void;
+};
+
+export type CreateExpenseModalProps = {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };

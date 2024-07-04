@@ -34,7 +34,7 @@ export default function Register() {
         data: { session },
         error,
       } = await db.auth.signUp({
-        email: user.email,
+        email: user.email.trim(),
         password: user.password,
       });
 

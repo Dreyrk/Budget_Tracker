@@ -26,6 +26,8 @@ export default function CustomButton({ text, classes, variant, onPress, children
 
 const styles = StyleSheet.create({
   primary: {
+    flexDirection: "row",
+    gap: 6,
     paddingHorizontal: 14,
     paddingVertical: 10,
     backgroundColor: Colors.global.button.primary,

@@ -36,7 +36,7 @@ export default function Login() {
       error,
       data: { session },
     } = await db.auth.signInWithPassword({
-      email: user.email,
+      email: user.email.trim(),
       password: user.password,
     });
     if (session) {
