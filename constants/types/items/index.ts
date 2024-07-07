@@ -1,3 +1,5 @@
+import { PostgrestError } from "@supabase/supabase-js";
+
 export type Tab = {
   title: string;
   href: string;
@@ -17,10 +19,16 @@ export type Expense = {
 export type NewExpense = {
   title: string;
   amount: number;
+  color?: string;
   description?: string;
   categories?: string[];
   date?: string;
   period?: number;
 };
+
+export interface Message {
+  success: boolean;
+  message: PostgrestError | null | string;
+}
 
 export type Option = { label: string; value: any };

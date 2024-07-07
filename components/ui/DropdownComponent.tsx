@@ -35,12 +35,16 @@ const DropdownComponent = ({
       valueField="value"
       placeholder={placeholder || "Select Item"}
       searchPlaceholder={searchPlaceholder || "Search..."}
-      value={value ? value[id] : ""}
+      value={typeof value === "object" ? value[id] : value}
       onChange={
         onChange
           ? onChange
           : (item: Option) => {
-              setValue({ ...value, [id]: item.value });
+              if (typeof value === "object") {
+                setValue({ ...value, [id]: item.value });
+              } else {
+                setValue(item.value);
+              }
             }
       }
       renderItem={renderItem}

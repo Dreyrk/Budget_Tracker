@@ -5,6 +5,7 @@ import { StyleSheet, Text, ScrollView, View } from "react-native";
 import SectionHeader from "@/components/section/SectionHeader";
 import getAllExpenses from "@/actions/expenses/getAll";
 import { useEffect, useState } from "react";
+import onInsert from "@/actions/expenses/subscriptions/insert";
 
 // const expenses: Expense[] = Array.from({ length: 20 }, (v, i) => {
 //   return {
@@ -38,11 +39,18 @@ export default function HomeScreen() {
   };
   useEffect(() => {
     getData();
+
+    const subscription = onInsert(setExpenses);
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
+
   const tabs: Tab[] = [
-    { title: "Tab 1", href: "/" },
-    { title: "Tab 2", href: "/" },
-    { title: "Tab 3", href: "/" },
+    { title: "Food", href: "/" },
+    { title: "Sports", href: "/" },
+    { title: "Games", href: "/" },
   ];
   return (
     <View style={styles.page}>
@@ -60,18 +68,5 @@ const styles = StyleSheet.create({
   container: {
     height: "90%",
     padding: 20,
-  },
-  listHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  title: {
-    fontWeight: "700",
-    fontSize: 20,
-  },
-  pickerContainer: {
-    width: 180,
   },
 });

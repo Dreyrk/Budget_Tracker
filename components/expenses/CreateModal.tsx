@@ -7,6 +7,8 @@ import CustomButton from "../ui/CustomButton";
 import create from "@/actions/expenses/create";
 import { CreateExpenseModalProps } from "@/constants/types/props";
 import DropdownComponent from "../ui/DropdownComponent";
+import { periods } from "@/constants";
+import ColorPicker from "reanimated-color-picker";
 
 const defaultExpense = {
   title: "",
@@ -17,8 +19,8 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
 
   const handleSubmit = async () => {
     const created = await create(newExpense);
-    console.log(created);
     if (created) {
+      setNewExpense(defaultExpense);
       setOpen(false);
     }
   };
@@ -35,18 +37,15 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
           </View>
           <View style={styles.modalBody}>
             <FormField label="Title" id="title" value={newExpense} setValue={setNewExpense} />
-            <FormField label="Amount" id="amount" value={newExpense} setValue={setNewExpense} />
+            <FormField label="Amount" id="amount" type="decimal-pad" value={newExpense} setValue={setNewExpense} />
             <DropdownComponent
               value={newExpense}
               setValue={setNewExpense}
               id="period"
-              data={[
-                { label: "Daily", value: 1 },
-                { label: "Monthly", value: 2 },
-                { label: "Yearly", value: 3 },
-              ]}
+              data={periods}
               placeholder="Period"
             />
+            <ColorPicker onChange={(color) => setNewExpense({ ...newExpense, color: color.hex })} />
             <FormField label="Description" id="description" value={newExpense} setValue={setNewExpense} />
           </View>
           <View style={styles.modalFooter}>

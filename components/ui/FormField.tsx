@@ -1,7 +1,7 @@
 import { FormFieldProps } from "@/constants/types/props";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
-export default function FormField({ label, id, value, setValue, placeholder }: FormFieldProps) {
+export default function FormField({ label, id, value, setValue, placeholder, type }: FormFieldProps) {
   const handleChange = (text: string) => {
     setValue({ ...value, [id]: text });
   };
@@ -16,6 +16,7 @@ export default function FormField({ label, id, value, setValue, placeholder }: F
         onChangeText={handleChange}
         placeholder={placeholder}
         autoCapitalize="none"
+        keyboardType={type || "default"}
       />
     </View>
   );

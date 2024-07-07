@@ -1,20 +1,28 @@
-import { NewExpense } from "@/constants/types/items";
+import { Message, NewExpense } from "@/constants/types/items";
 import { db } from "@/lib/db";
 import { getObjectData } from "@/services/asyncstorage";
 
-async function create(newExpense: NewExpense) {
-  const { user } = await getObjectData("session");
-  const { data, error } = await db.from("expenses").insert({
-    ...newExpense,
-    user_id: user.id,
-  });
+async function create(newExpense: NewExpense): Promise<Message> {
+  try {
+    const { user } = await getObjectData("session");
+    if (!user || !user.id) {
+      throw new Error("User session not found");
+    }
 
-  console.log(data);
+    const { error } = await db.from("expenses").insert({
+      ...newExpense,
+      user_id: user.id,
+    });
 
-  if (!error) {
-    return false;
-  } else {
-    return true;
+    if (error) {
+      console.error("Error inserting expense:", error);
+      return { success: false, message: error };
+    }
+
+    return { success: true, message: "Created" };
+  } catch (e) {
+    console.error("Unexpected error:", e);
+    return { success: false, message: (e as Error).message };
   }
 }
 

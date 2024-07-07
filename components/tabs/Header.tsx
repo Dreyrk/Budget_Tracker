@@ -8,16 +8,23 @@ import CreateModal from "../expenses/CreateModal";
 
 export default function TabsHeader({ tabs }: TabsHeaderProps) {
   const [open, setOpen] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>("");
 
   const handleOpen = () => {
     setOpen(!open);
   };
+
+  const handleFilter = () => {
+    //TO DO: set filter selected and apply selected style to the tab
+    setSelected("");
+  };
+
   return (
     <View style={styles.container}>
       <View>
         <ScrollView horizontal contentContainerStyle={styles.contentContainer}>
           {tabs.map((tab) => (
-            <Tab key={tab.title} title={tab.title} onPress={() => {}} />
+            <Tab key={tab.title} selected={selected} title={tab.title} onPress={handleFilter} />
           ))}
         </ScrollView>
       </View>

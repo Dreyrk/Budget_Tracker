@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Expense, Option, Tab } from "../items";
+import { KeyboardTypeOptions } from "react-native";
 
 export type TabBarLabelProps = {
   focused: boolean;
@@ -14,6 +15,7 @@ export type TabsHeaderProps = {
 export type TabProps = {
   title: string;
   onPress: () => void;
+  selected: string;
 };
 
 export type ExpensesListProps = {
@@ -32,7 +34,7 @@ export type DropdownComponentProps = {
   placeholder?: string;
   onChange?: () => void;
   id: string;
-  value: InputControlValue;
+  value: InputControlValue | number | string | boolean;
   setValue: React.Dispatch<React.SetStateAction<any>>;
 };
 
@@ -51,6 +53,7 @@ export type FormFieldProps = {
   setValue: React.Dispatch<React.SetStateAction<any>>;
   label: string;
   placeholder?: string;
+  type?: KeyboardTypeOptions;
 };
 
 export type CustomButtonProps = {

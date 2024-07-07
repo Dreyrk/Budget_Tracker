@@ -3,7 +3,6 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import Amount from "./ui/Amount";
 
 export default function ExpenseItem({ expense }: ExpenseItemProps) {
-  console.log(expense);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{expense.title}</Text>
