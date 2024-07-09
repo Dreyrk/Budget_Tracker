@@ -21,7 +21,7 @@ export type NewExpense = {
   amount: number;
   color?: string;
   description?: string;
-  categories?: string[];
+  categories?: number[];
   date?: string;
   period?: number;
 };
@@ -32,3 +32,21 @@ export interface Message {
 }
 
 export type Option = { label: string; value: any };
+
+export type Color = {
+  group?: string;
+  hex: string;
+  name: string;
+  rgb?: string;
+  theme?: string;
+};
+
+export type Category = {
+  id: number;
+  title: string;
+  createdAt?: string;
+  description?: string;
+  color?: string;
+  emoji?: string;
+  user_id: string;
+};

@@ -1,23 +1,11 @@
 import ExpensesList from "@/components/ExpensesList";
 import TabsHeader from "@/components/tabs/Header";
 import { Expense, Tab } from "@/constants/types/items";
-import { StyleSheet, Text, ScrollView, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import SectionHeader from "@/components/section/SectionHeader";
 import getAllExpenses from "@/actions/expenses/getAll";
 import { useEffect, useState } from "react";
 import onInsert from "@/actions/expenses/subscriptions/insert";
-
-// const expenses: Expense[] = Array.from({ length: 20 }, (v, i) => {
-//   return {
-//     id: i,
-//     title: "Burger",
-//     amount: 12,
-//     description: "Miam miam",
-//     categories: ["Food", "Other", "Fun", "Test", "Category"],
-//     date: "01/01/2000",
-//     user_id: "1",
-//   };
-// });
 
 const periodsOptions = [
   { label: "Daily", value: "daily" },

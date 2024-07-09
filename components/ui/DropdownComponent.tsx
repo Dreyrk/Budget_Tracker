@@ -12,6 +12,7 @@ const DropdownComponent = ({
   value,
   setValue,
   id,
+  customRenderItem,
 }: DropdownComponentProps) => {
   const renderItem = (item: Option) => {
     return (
@@ -19,6 +20,27 @@ const DropdownComponent = ({
         <Text style={styles.textItem}>{item.label}</Text>
       </View>
     );
+  };
+
+  const defaultOnChange = (item: Option) => {
+    if (value[id]) {
+      const selectedValue = Array.isArray(value[id]) ? [...new Set([...value[id], item.value])] : item.value;
+      setValue({ ...value, [id]: selectedValue });
+    } else {
+      setValue(item.value);
+    }
+  };
+
+  const getValue = (value) => {
+    if (value[id]) {
+      if (Array.isArray(value[id])) {
+        return value[id].join(", ");
+      } else {
+        return value[id];
+      }
+    } else {
+      return value;
+    }
   };
 
   return (
@@ -35,19 +57,9 @@ const DropdownComponent = ({
       valueField="value"
       placeholder={placeholder || "Select Item"}
       searchPlaceholder={searchPlaceholder || "Search..."}
-      value={typeof value === "object" ? value[id] : value}
-      onChange={
-        onChange
-          ? onChange
-          : (item: Option) => {
-              if (typeof value === "object") {
-                setValue({ ...value, [id]: item.value });
-              } else {
-                setValue(item.value);
-              }
-            }
-      }
-      renderItem={renderItem}
+      value={getValue(value)}
+      onChange={onChange ? onChange : defaultOnChange}
+      renderItem={customRenderItem || renderItem}
     />
   );
 };

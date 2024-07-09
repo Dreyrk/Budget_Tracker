@@ -34,8 +34,9 @@ export type DropdownComponentProps = {
   placeholder?: string;
   onChange?: () => void;
   id: string;
-  value: InputControlValue | number | string | boolean;
+  value: InputControlValue | any;
   setValue: React.Dispatch<React.SetStateAction<any>>;
+  customRenderItem?: (item: Option, selected?: boolean) => JSX.Element;
 };
 
 export type SectionHeaderProps = {
