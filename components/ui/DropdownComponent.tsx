@@ -1,5 +1,6 @@
 import { Option } from "@/constants/types/items";
 import { DropdownComponentProps } from "@/constants/types/props";
+import { Controller } from "react-hook-form";
 import { StyleSheet, View, Text } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
@@ -13,6 +14,8 @@ const DropdownComponent = ({
   setValue,
   id,
   customRenderItem,
+  customStyles,
+  control,
 }: DropdownComponentProps) => {
   const renderItem = (item: Option) => {
     return (
@@ -31,21 +34,36 @@ const DropdownComponent = ({
     }
   };
 
-  const getValue = (value) => {
-    if (value[id]) {
-      if (Array.isArray(value[id])) {
-        return value[id].join(", ");
-      } else {
-        return value[id];
-      }
-    } else {
-      return value;
-    }
-  };
+  if (control) {
+    return (
+      <Controller
+        name={id}
+        render={({ field: { value } }) => (
+          <Dropdown
+            style={[styles.dropdown, customStyles]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search={search}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={placeholder || "Select Item"}
+            searchPlaceholder={searchPlaceholder || "Search..."}
+            value={value}
+            onChange={onChange ? onChange : defaultOnChange}
+            renderItem={customRenderItem || renderItem}
+          />
+        )}
+      />
+    );
+  }
 
   return (
     <Dropdown
-      style={styles.dropdown}
+      style={[styles.dropdown, customStyles]}
       placeholderStyle={styles.placeholderStyle}
       selectedTextStyle={styles.selectedTextStyle}
       inputSearchStyle={styles.inputSearchStyle}
@@ -57,7 +75,7 @@ const DropdownComponent = ({
       valueField="value"
       placeholder={placeholder || "Select Item"}
       searchPlaceholder={searchPlaceholder || "Search..."}
-      value={getValue(value)}
+      value={value[id] || value}
       onChange={onChange ? onChange : defaultOnChange}
       renderItem={customRenderItem || renderItem}
     />
@@ -69,6 +87,7 @@ export default DropdownComponent;
 const styles = StyleSheet.create({
   dropdown: {
     margin: 16,
+    width: "100%",
     height: 30,
     backgroundColor: "white",
     borderRadius: 12,

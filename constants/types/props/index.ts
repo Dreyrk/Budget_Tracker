@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Expense, Option, Tab } from "../items";
-import { KeyboardTypeOptions } from "react-native";
+import { KeyboardTypeOptions, StyleProp } from "react-native";
+import { Control, FieldValues } from "react-hook-form";
 
 export type TabBarLabelProps = {
   focused: boolean;
@@ -37,6 +38,8 @@ export type DropdownComponentProps = {
   value: InputControlValue | any;
   setValue: React.Dispatch<React.SetStateAction<any>>;
   customRenderItem?: (item: Option, selected?: boolean) => JSX.Element;
+  customStyles?: any;
+  control?: Control<FieldValues>;
 };
 
 export type SectionHeaderProps = {
@@ -55,6 +58,9 @@ export type FormFieldProps = {
   label: string;
   placeholder?: string;
   type?: KeyboardTypeOptions;
+  multiline?: boolean;
+  lines?: number;
+  control?: Control<FieldValues>;
 };
 
 export type CustomButtonProps = {

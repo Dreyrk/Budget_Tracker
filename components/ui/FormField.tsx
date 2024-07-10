@@ -1,25 +1,64 @@
 import { FormFieldProps } from "@/constants/types/props";
 import { View, Text, StyleSheet, TextInput } from "react-native";
+import { Controller } from "react-hook-form";
 
-export default function FormField({ label, id, value, setValue, placeholder, type }: FormFieldProps) {
+export default function FormField({
+  label,
+  id,
+  value,
+  setValue,
+  placeholder,
+  type,
+  multiline,
+  lines,
+  control,
+}: FormFieldProps) {
   const handleChange = (text: string) => {
     setValue({ ...value, [id]: text });
   };
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        secureTextEntry={id.includes("password")}
-        style={styles.input}
-        id={id}
-        value={value[id]}
-        onChangeText={handleChange}
-        placeholder={placeholder}
-        autoCapitalize="none"
-        keyboardType={type || "default"}
+  if (control) {
+    return (
+      <Controller
+        control={control}
+        name={id}
+        render={({ field: { value } }) => (
+          <View style={styles.container}>
+            <Text style={styles.label}>{label}</Text>
+            <TextInput
+              secureTextEntry={id.includes("password")}
+              style={styles.input(multiline)}
+              id={id}
+              value={value[id]}
+              onChangeText={handleChange}
+              placeholder={placeholder}
+              autoCapitalize="none"
+              keyboardType={type || "default"}
+              multiline={multiline}
+              numberOfLines={lines}
+            />
+          </View>
+        )}
       />
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.label}>{label}</Text>
+        <TextInput
+          secureTextEntry={id.includes("password")}
+          style={styles.input(multiline)}
+          id={id}
+          value={value[id]}
+          onChangeText={handleChange}
+          placeholder={placeholder}
+          autoCapitalize="none"
+          keyboardType={type || "default"}
+          multiline={multiline}
+          numberOfLines={lines}
+        />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -28,12 +67,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 5,
   },
-  input: {
-    height: 40,
+  input: (multiline: boolean) => ({
+    height: multiline ? 200 : 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
+    padding: 10,
     marginBottom: 15,
-  },
+    textAlignVertical: "top",
+  }),
 });

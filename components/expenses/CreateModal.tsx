@@ -9,6 +9,8 @@ import { CreateExpenseModalProps } from "@/constants/types/props";
 import DropdownComponent from "../ui/DropdownComponent";
 import { periods } from "@/constants";
 import getAllCategories from "@/actions/users/getAllCategories";
+import CategoriesDropdown from "./CategoriesDropdown";
+import { useForm } from "react-hook-form";
 
 const defaultExpense = {
   title: "",
@@ -19,6 +21,8 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
   const [newExpense, setNewExpense] = useState<NewExpense>(defaultExpense);
   const [categories, setCategories] = useState<Category[]>([]);
 
+  const { control, handleSubmit } = useForm();
+
   useEffect(() => {
     const getData = async () => {
       setCategories(await getAllCategories());
@@ -26,7 +30,7 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
     getData();
   }, []);
 
-  const handleSubmit = async () => {
+  const createNewExpense = async () => {
     const created = await create(newExpense);
     if (created) {
       setNewExpense(defaultExpense);
@@ -52,18 +56,23 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
               id="period"
               data={periods}
               placeholder="Period"
+              customStyles={{ marginLeft: 0 }}
+              control={control}
             />
-            <DropdownComponent
+            <View style={{ paddingVertical: 20 }}>
+              <CategoriesDropdown categories={categories} control={control} />
+            </View>
+            <FormField
+              multiline={true}
+              lines={10}
+              label="Description"
+              id="description"
               value={newExpense}
               setValue={setNewExpense}
-              id="categories"
-              data={categories.map(({ title, id }) => ({ label: title, value: id }))}
-              placeholder="Categories"
             />
-            <FormField label="Description" id="description" value={newExpense} setValue={setNewExpense} />
           </View>
           <View style={styles.modalFooter}>
-            <CustomButton text="Create" variant="success" onPress={handleSubmit} />
+            <CustomButton text="Create" variant="success" onPress={handleSubmit(createNewExpense)} />
           </View>
         </View>
       </View>
@@ -97,54 +106,12 @@ const styles = StyleSheet.create({
   },
   modalBody: {
     marginBottom: 20,
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   modalFooter: {
+    marginVertical: 12,
     flexDirection: "row",
     justifyContent: "flex-end",
-  },
-  // color picker
-  sliderTitle: {
-    color: "#000",
-    fontWeight: "bold",
-    marginBottom: 5,
-    paddingHorizontal: 4,
-  },
-  sliderStyle: {
-    height: 300,
-    borderRadius: 20,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  previewTxtContainer: {
-    paddingTop: 20,
-    marginTop: 20,
-    borderTopWidth: 1,
-    borderColor: "#bebdbe",
-  },
-  swatchesContainer: {
-    paddingTop: 20,
-    marginTop: 20,
-    borderTopWidth: 1,
-    borderColor: "#bebdbe",
-    alignItems: "center",
-    flexWrap: "nowrap",
-    gap: 10,
-  },
-  swatchStyle: {
-    borderRadius: 20,
-    height: 30,
-    width: 30,
-    margin: 0,
-    marginBottom: 0,
-    marginHorizontal: 0,
-    marginVertical: 0,
   },
 });
