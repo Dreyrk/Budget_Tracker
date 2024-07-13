@@ -37,25 +37,29 @@ const DropdownComponent = ({
   if (control) {
     return (
       <Controller
+        control={control}
         name={id}
-        render={({ field: { value } }) => (
-          <Dropdown
-            style={[styles.dropdown, customStyles]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={data}
-            search={search}
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={placeholder || "Select Item"}
-            searchPlaceholder={searchPlaceholder || "Search..."}
-            value={value}
-            onChange={onChange ? onChange : defaultOnChange}
-            renderItem={customRenderItem || renderItem}
-          />
+        render={({ field: { value }, fieldState: { error } }) => (
+          <>
+            <Dropdown
+              style={[styles.dropdown, customStyles]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={data}
+              search={search}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={placeholder || "Select Item"}
+              searchPlaceholder={searchPlaceholder || "Search..."}
+              value={value}
+              onChange={onChange ? onChange : defaultOnChange}
+              renderItem={customRenderItem || renderItem}
+            />
+            {error && error?.message && <Text style={styles.error}>{error.message}</Text>}
+          </>
         )}
       />
     );
@@ -100,6 +104,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
+  },
+  error: {
+    margin: 0,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    color: "#d00000",
+    fontSize: 12,
+    fontStyle: "italic",
+    fontWeight: "300",
   },
   icon: {
     marginRight: 5,

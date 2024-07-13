@@ -14,31 +14,54 @@ export default function FormField({
   control,
 }: FormFieldProps) {
   const handleChange = (text: string) => {
-    setValue({ ...value, [id]: text });
+    if (value && setValue) {
+      setValue({ ...value, [id]: text });
+    } else {
+      return;
+    }
   };
   if (control) {
     return (
       <Controller
         control={control}
         name={id}
-        render={({ field: { value } }) => (
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
             <TextInput
               secureTextEntry={id.includes("password")}
               style={styles.input(multiline)}
               id={id}
-              value={value[id]}
-              onChangeText={handleChange}
+              value={value}
+              onChangeText={onChange}
               placeholder={placeholder}
               autoCapitalize="none"
               keyboardType={type || "default"}
               multiline={multiline}
               numberOfLines={lines}
             />
+            {error && error?.message && <Text style={styles.error}>{error.message}</Text>}
           </View>
         )}
       />
+    );
+  } else if (value && setValue) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.label}>{label}</Text>
+        <TextInput
+          secureTextEntry={id.includes("password")}
+          style={styles.input(multiline)}
+          id={id}
+          value={value[id]}
+          onChangeText={handleChange}
+          placeholder={placeholder}
+          autoCapitalize="none"
+          keyboardType={type || "default"}
+          multiline={multiline}
+          numberOfLines={lines}
+        />
+      </View>
     );
   } else {
     return (
@@ -48,7 +71,7 @@ export default function FormField({
           secureTextEntry={id.includes("password")}
           style={styles.input(multiline)}
           id={id}
-          value={value[id]}
+          value={"None"}
           onChangeText={handleChange}
           placeholder={placeholder}
           autoCapitalize="none"
@@ -76,4 +99,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlignVertical: "top",
   }),
+  error: {
+    margin: 0,
+    marginTop: -10,
+    marginBottom: 10,
+    paddingLeft: 10,
+    color: "#d00000",
+    fontSize: 12,
+    fontStyle: "italic",
+    fontWeight: "300",
+  },
 });

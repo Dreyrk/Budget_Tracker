@@ -53,8 +53,8 @@ export type InputControlValue = {
 
 export type FormFieldProps = {
   id: string;
-  value: InputControlValue;
-  setValue: React.Dispatch<React.SetStateAction<any>>;
+  value?: InputControlValue;
+  setValue?: React.Dispatch<React.SetStateAction<any>>;
   label: string;
   placeholder?: string;
   type?: KeyboardTypeOptions;

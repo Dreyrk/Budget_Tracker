@@ -1,6 +1,5 @@
 import { Category } from "@/constants/types/items";
-import React, { useState } from "react";
-import { Controller, Control, FieldValues } from "react-hook-form";
+import { Controller, Control, FieldValues, useFormContext } from "react-hook-form";
 import { View, Text, StyleSheet } from "react-native";
 import { MultiSelect } from "react-native-element-dropdown";
 
@@ -11,17 +10,17 @@ const CategoriesDropdown = ({
   categories: Category[];
   control: Control<FieldValues>;
 }) => {
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const { setValue } = useFormContext();
 
   const handleSelect = (selectedItems: string[]) => {
-    setSelectedIds(selectedItems.map(Number));
+    const selected = [...new Set(selectedItems.map(Number))];
+    setValue("categories", selected);
   };
 
   return (
     <Controller
       control={control}
       name="categories"
-      defaultValue={[]}
       render={({ field: { value } }) => (
         <MultiSelect
           data={categories.map((el) => ({ ...el, id: el.id.toString() }))}

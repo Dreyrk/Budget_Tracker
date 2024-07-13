@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import FormField from "../ui/FormField";
 import { useEffect, useState } from "react";
@@ -10,7 +10,9 @@ import DropdownComponent from "../ui/DropdownComponent";
 import { periods } from "@/constants";
 import getAllCategories from "@/actions/users/getAllCategories";
 import CategoriesDropdown from "./CategoriesDropdown";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ExpenseSchema, expenseSchema } from "@/actions/schemas/expenseSchema";
 
 const defaultExpense = {
   title: "",
@@ -18,10 +20,17 @@ const defaultExpense = {
   categories: [],
 };
 export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) {
-  const [newExpense, setNewExpense] = useState<NewExpense>(defaultExpense);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const { control, handleSubmit } = useForm();
+  const methods = useForm<ExpenseSchema>({
+    defaultValues: defaultExpense,
+    resolver: zodResolver(expenseSchema),
+  });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   useEffect(() => {
     const getData = async () => {
@@ -33,7 +42,6 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
   const createNewExpense = async () => {
     const created = await create(newExpense);
     if (created) {
-      setNewExpense(defaultExpense);
       setOpen(false);
     }
   };
@@ -47,30 +55,23 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
               <AntDesign name="close" size={24} color="#d00000" />
             </TouchableOpacity>
           </View>
-          <View style={styles.modalBody}>
-            <FormField label="Title" id="title" value={newExpense} setValue={setNewExpense} />
-            <FormField label="Amount" id="amount" type="decimal-pad" value={newExpense} setValue={setNewExpense} />
-            <DropdownComponent
-              value={newExpense}
-              setValue={setNewExpense}
-              id="period"
-              data={periods}
-              placeholder="Period"
-              customStyles={{ marginLeft: 0 }}
-              control={control}
-            />
-            <View style={{ paddingVertical: 20 }}>
-              <CategoriesDropdown categories={categories} control={control} />
-            </View>
-            <FormField
-              multiline={true}
-              lines={10}
-              label="Description"
-              id="description"
-              value={newExpense}
-              setValue={setNewExpense}
-            />
-          </View>
+          <ScrollView contentContainerStyle={styles.modalBody}>
+            <FormProvider {...methods}>
+              <FormField control={control as any} label="Title" id="title" />
+              <FormField control={control as any} label="Amount" id="amount" type="decimal-pad" />
+              <DropdownComponent
+                id="period"
+                data={periods}
+                placeholder="Period"
+                customStyles={{ marginLeft: 0 }}
+                control={control as any}
+              />
+              <View style={{ paddingVertical: 20 }}>
+                <CategoriesDropdown categories={categories} control={control as any} />
+              </View>
+              <FormField control={control as any} multiline={true} lines={10} label="Description" id="description" />
+            </FormProvider>
+          </ScrollView>
           <View style={styles.modalFooter}>
             <CustomButton text="Create" variant="success" onPress={handleSubmit(createNewExpense)} />
           </View>
