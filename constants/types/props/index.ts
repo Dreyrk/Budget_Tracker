@@ -35,8 +35,8 @@ export type DropdownComponentProps = {
   placeholder?: string;
   onChange?: () => void;
   id: string;
-  value: InputControlValue | any;
-  setValue: React.Dispatch<React.SetStateAction<any>>;
+  value?: InputControlValue | any;
+  setValue?: React.Dispatch<React.SetStateAction<any>>;
   customRenderItem?: (item: Option, selected?: boolean) => JSX.Element;
   customStyles?: any;
   control?: Control<FieldValues>;

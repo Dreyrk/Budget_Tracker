@@ -33,7 +33,10 @@ export default function FormField({
               style={styles.input(multiline)}
               id={id}
               value={value}
-              onChangeText={onChange}
+              onChangeText={(text) => {
+                const newValue = type === "decimal-pad" || type === "numeric" ? Number(text) : text;
+                onChange(newValue);
+              }}
               placeholder={placeholder}
               autoCapitalize="none"
               keyboardType={type || "default"}

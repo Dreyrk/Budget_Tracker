@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import FormField from "../ui/FormField";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import DropdownComponent from "../ui/DropdownComponent";
 import { periods } from "@/constants";
 import getAllCategories from "@/actions/users/getAllCategories";
 import CategoriesDropdown from "./CategoriesDropdown";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExpenseSchema, expenseSchema } from "@/actions/schemas/expenseSchema";
 
@@ -26,6 +26,7 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
     defaultValues: defaultExpense,
     resolver: zodResolver(expenseSchema),
   });
+
   const {
     control,
     handleSubmit,
@@ -39,10 +40,12 @@ export default function CreateModal({ open, setOpen }: CreateExpenseModalProps) 
     getData();
   }, []);
 
-  const createNewExpense = async () => {
+  const createNewExpense = async (newExpense: ExpenseSchema) => {
     const created = await create(newExpense);
     if (created) {
       setOpen(false);
+    } else {
+      Alert.alert("Something wrong... Try again later");
     }
   };
   return (

@@ -1,21 +1,22 @@
 import { ExpenseItemProps } from "@/constants/types/props";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Amount from "./ui/Amount";
+import { router } from "expo-router";
 
 export default function ExpenseItem({ expense }: ExpenseItemProps) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={() => router.push(`/expense/${expense.id}`)} style={styles.container}>
       <Text style={styles.title}>{expense.title}</Text>
       <Text ellipsizeMode="tail" numberOfLines={1} style={styles.categoriesContainer}>
         {expense.categories &&
           expense.categories.map((category) => (
-            <Pressable onPress={() => console.log("pressed ", category)} key={category}>
+            <View key={category}>
               <Text style={styles.text}>{category}, </Text>
-            </Pressable>
+            </View>
           ))}
       </Text>
       <Amount amount={expense.amount} />
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -27,6 +28,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
+    borderWidth: 1,
+    borderRadius: 8,
   },
   title: {
     fontSize: 14,

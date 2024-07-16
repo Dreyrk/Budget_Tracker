@@ -3,13 +3,7 @@ import { Controller, Control, FieldValues, useFormContext } from "react-hook-for
 import { View, Text, StyleSheet } from "react-native";
 import { MultiSelect } from "react-native-element-dropdown";
 
-const CategoriesDropdown = ({
-  categories = [],
-  control,
-}: {
-  categories: Category[];
-  control: Control<FieldValues>;
-}) => {
+const CategoriesDropdown = ({ categories, control }: { categories: Category[]; control: Control<FieldValues> }) => {
   const { setValue } = useFormContext();
 
   const handleSelect = (selectedItems: string[]) => {
@@ -29,7 +23,7 @@ const CategoriesDropdown = ({
           valueField="id"
           placeholder="Select Categories"
           searchPlaceholder="Search..."
-          value={value}
+          value={value.map(String)}
           onChange={handleSelect}
           renderItem={(item, selected) => (
             <View style={[styles.item, selected && styles.selectedItem]}>

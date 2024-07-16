@@ -26,12 +26,15 @@ const DropdownComponent = ({
   };
 
   const defaultOnChange = (item: Option) => {
-    if (value[id]) {
-      const selectedValue = Array.isArray(value[id]) ? [...new Set([...value[id], item.value])] : item.value;
-      setValue({ ...value, [id]: selectedValue });
-    } else {
-      setValue(item.value);
+    if (setValue) {
+      if (value[id]) {
+        const selectedValue = Array.isArray(value[id]) ? [...new Set([...value[id], item.value])] : item.value;
+        setValue({ ...value, [id]: selectedValue });
+      } else {
+        setValue(item.value);
+      }
     }
+    return;
   };
 
   if (control) {
@@ -39,7 +42,7 @@ const DropdownComponent = ({
       <Controller
         control={control}
         name={id}
-        render={({ field: { value }, fieldState: { error } }) => (
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
           <>
             <Dropdown
               style={[styles.dropdown, customStyles]}
@@ -55,7 +58,7 @@ const DropdownComponent = ({
               placeholder={placeholder || "Select Item"}
               searchPlaceholder={searchPlaceholder || "Search..."}
               value={value}
-              onChange={onChange ? onChange : defaultOnChange}
+              onChange={({ value }) => onChange(value)}
               renderItem={customRenderItem || renderItem}
             />
             {error && error?.message && <Text style={styles.error}>{error.message}</Text>}
